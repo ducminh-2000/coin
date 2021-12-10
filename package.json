@@ -1,0 +1,22 @@
+{
+  "name": "trending-coin",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000c\u0000o\u0000i\u0000n\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ducminh-2000/coin.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ducminh-2000/coin/issues"
+  },
+  "homepage": "https://github.com/ducminh-2000/coin#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

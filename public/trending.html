@@ -1,0 +1,126 @@
+<html>
+
+<head>
+    <title>Trending</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="row">
+        <div class="col-md-6 col-xs-6">
+            <h3> up 5%</h3>
+            <table id="up">
+                <tr>
+                    <th>Datetime</th>
+                    <th>Symbol</th>
+                    <th>Current price</th>
+                    <th>Price change percent</th>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-6 col-xs-6">
+            <h3> down -10%</h3>
+            <table id="down">
+                <tr>
+                    <th>Datetime</th>
+                    <th>Symbol</th>
+                    <th>Current price</th>
+                    <th>Price change percent</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+<style>
+    table td,
+    table th {
+        padding: 15px;
+        border: 1px solid black;
+    }
+
+    table {
+        margin: auto;
+        border: 1px solid black;
+    }
+
+    h3 {
+        text-align: center;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        var trade = {
+            date: '',
+            symbol: '',
+            currentPrice: '',
+            changePercent: '',
+            volumeChange: ''
+        }
+        var listUp = [], listDown = [], listChangge = [], list = [];
+        var listCoin = ["FTMUSDT","STXUSDT","STPTUSDT","MOVRUSDT","ANKRUSDT","ARPAUSDT","DFUSDT","SFPUSDT",
+                        "ARUSDT","COTIUSDT","CELRUSDT","ZILUSDT","SOLUSDT","LUNAUSDT","DOTUSDT","DYDXUSDT",
+                        "XTZUSDT","CAKEUSDT","BAKEUSDT","MATICUSDT","GXSUSDT","BEAMUSDT","NULSUSDT","BTCSTUSDT",
+                        "WRXUSDT","ILVUSDT","HIVEUSDT","AIONUSDT","LITUSDT","GHSTUSDT","MITHUSDT","CHESSUSDT",
+                        "IRISUSDT","JASMYUSDT","COCOSUSDT","REQUSDT","SFPUSDT","STORJUSDT","SANDUSDT","GALAUSDT",
+                        "SHIBUSDT","DOTUSDT","VETUSDT","ETHUSDT","BTCUSDT","ARUSDT","ONEUSDT","BNBUSDT","MDTUSDT","JUVUSDT",
+                        "PORTOUSDT","SANTOSUSDT","LAZIOUSDT","NULLSUSDT","VIDTUSDT","GTOUSDT","DFUSDT","POLSUSDT","ELFUSDT",
+                        "BLZUSDT","QIUSDT","BONDUSDT"];
+        listCoin.forEach((coin) => {
+            $('#up').append(`<tr id=${coin.toLowerCase()}-up> </tr>`);
+            $('#down').append(`<tr id=${coin.toLowerCase()}-down> </tr>`);
+            $('#change').append(`<tr id=${coin.toLowerCase()}> </tr>`);
+        })
+        listCoin.forEach((coin) => {
+            var binanceSocket = new WebSocket("wss://stream.binance.com:9443/ws/" + coin.toLowerCase() + "@ticker")
+            binanceSocket.onmessage = function (event) {
+                var data = JSON.parse(event.data);
+                var date = new Date(data.E);
+                var day = date.getUTCDate();
+                var month = date.getMonth();
+                var year = date.getFullYear();
+                var minute = "0" + date.getMinutes();
+                var hour = date.getHours();
+                var second = "0" + date.getSeconds();
+                var s_date = date.getDate() +
+                    "/" + (date.getMonth() + 1) +
+                    "/" + date.getFullYear() +
+                    " " + date.getHours() +
+                    ":" + date.getMinutes() +
+                    ":" + date.getSeconds();
+                trade.date = s_date;
+                trade.symbol = data.s;
+                trade.currentPrice = data.c;
+                trade.changePercent = parseFloat(data.P);
+                if (trade.changePercent > 0.5) {
+                    listUp.push(trade);
+                }
+                else if(trade.changePercent < 0.5) listUp.pop(trade);
+                if (trade.changePercent <= -10) {
+                    listDown.push(trade);
+                }
+                else if(trade.changePercent > -10) listDown.pop(trade);
+                listUp.forEach((key) => {
+                    var item = `#${key.symbol.toLowerCase()}-up`;
+                    if(key.changePercent > 0.5) {
+                        $(item).empty();
+                        $(item).append(`<td>${key.date}</td><td>${key.symbol}</td><td>${key.currentPrice}</td><td style="text-align:center"><span class="btn btn-success">${key.changePercent}<span></td>`)
+                    }
+                    
+                })
+                listDown.forEach((key) => {
+                    var item = `#${key.symbol.toLowerCase()}-down`;
+                    if(key.changePercent < -10) {
+                        $(item).empty();
+                        $(item).append(`<td>${key.date}</td><td>${key.symbol}</td><td>${key.currentPrice}</td><td><p class="btn btn-danger">${key.changePercent}</p></td>`)
+                    } 
+                })
+            }
+        })
+    });
+</script>
+
+</html>
