@@ -61,6 +61,9 @@
             volumeChange: ''
         }
         var listUp = [], listDown = [], listChangge = [], list = [];
+        
+//         A thêm coin vào mảng này và nhập đúng định dạng là chữ in hoa, có dấu nháy kép cho mỗi cặp
+        
         var listCoin = ["FTMUSDT","STXUSDT","STPTUSDT","MOVRUSDT","ANKRUSDT","ARPAUSDT","DFUSDT","SFPUSDT",
                         "ARUSDT","COTIUSDT","CELRUSDT","ZILUSDT","SOLUSDT","LUNAUSDT","DOTUSDT","DYDXUSDT",
                         "XTZUSDT","CAKEUSDT","BAKEUSDT","MATICUSDT","GXSUSDT","BEAMUSDT","NULSUSDT","BTCSTUSDT",
@@ -69,6 +72,10 @@
                         "SHIBUSDT","DOTUSDT","VETUSDT","ETHUSDT","BTCUSDT","ARUSDT","ONEUSDT","BNBUSDT","MDTUSDT","JUVUSDT",
                         "PORTOUSDT","SANTOSUSDT","LAZIOUSDT","NULLSUSDT","VIDTUSDT","GTOUSDT","DFUSDT","POLSUSDT","ELFUSDT",
                         "BLZUSDT","QIUSDT","BONDUSDT"];
+        
+//         Kết thúc danh sách coin
+        
+        
         listCoin.forEach((coin) => {
             $('#up').append(`<tr id=${coin.toLowerCase()}-up> </tr>`);
             $('#down').append(`<tr id=${coin.toLowerCase()}-down> </tr>`);
